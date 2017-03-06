@@ -1,0 +1,24 @@
+﻿Построение начато 06.03.2017 18:37:42.
+     1>Проект "C:\Users\Alina\Documents\Visual Studio 2012\Projects\Project\Project\Project.vcxproj" в узле 2 (целевые объекты Build).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib MyForm.cpp
+         MyForm.cpp
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(62): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(110): см. объявление "strcpy"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(261): error C2374: ConnectSocket: переопределение; множественная инициализация
+                 c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(252): см. объявление "ConnectSocket"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(262): error C2374: result: переопределение; множественная инициализация
+                 c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(254): см. объявление "result"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(262): error C2374: ptr: переопределение; множественная инициализация
+                 c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(254): см. объявление "ptr"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(262): error C2370: hints: переопределение; другой класс хранения
+                 c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(254): см. объявление "hints"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(265): error C2370: iResult: переопределение; другой класс хранения
+                 c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(253): см. объявление "iResult"
+     1>c:\users\alina\documents\visual studio 2012\projects\project\project\MyForm.h(277): error C2440: =: невозможно преобразовать "addrinfo *" в "addrinfo *"
+     1>MyForm.cpp(8): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+     1>Построение проекта "C:\Users\Alina\Documents\Visual Studio 2012\Projects\Project\Project\Project.vcxproj" завершено (целевые объекты Build) с ошибкой.
+
+Сбой построения.
+
+Затраченное время: 00:00:04.61
