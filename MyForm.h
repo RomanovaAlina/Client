@@ -4,7 +4,6 @@
 #include <iostream> //для вывода информации в консоль
 #include <WS2tcpip.h> //для получения информации о сервере
 #include <string>
-//#include <pthread.h>
 #include "MyForm1.h"
 #include <msclr\marshal_cppstd.h>
 using namespace System;
@@ -50,8 +49,6 @@ namespace Project {
 		MyForm(void)
 		{
 			InitializeComponent();
-			//ip=IPAddress::Parse("127.0.0.1");
-			port=7770;
 		}
 
 		void SendMessage (string message)
@@ -64,40 +61,39 @@ namespace Project {
 			}
 		}
 
-		  void* RecvMessage(void *args) // функция принятия сообщений от клиента
-        {
+		void RecvMessage() // функция принятия сообщений от клиента
+		{
 			//array<Byte>^ buffer;
 			char* buffer=new char [1024];
 			for (int i = 0; i < sizeof(buffer); i++)
-            {
-                buffer[i] = 0; //чистим буфер
-            }
-            for (; ; )
-            {
-                   //Client.receive(buffer);//прием сообщения с помощью именно сокета, в виде байтовых сиволов
-				   recv(socket(AF_UNSPEC, SOCK_STREAM,IPPROTO_TCP),buffer,1024,NULL);
-				   //String^ message;//перевод байтов в строку
-				   //message=Encoding::UTF8->GetString(buffer);
-				   string message(buffer);
-				   int count = message.find("##",0);// поиск "##", это означает конец сообщения;
-                   if (count == -1)
-                   {
-                       continue;
-                   }
+			{
+				buffer[i] = 0; //чистим буфер
+			}
+			for (; ; )
+			{
+				recv(socket(AF_UNSPEC, SOCK_STREAM,IPPROTO_TCP),buffer,1024,NULL);
+				//String^ message;//перевод байтов в строку
+				//message=Encoding::UTF8->GetString(buffer);
+				string message(buffer);
+				int count = message.find("##",0);// поиск "##", это означает конец сообщения;
+				if (count == -1)
+				{
+					continue;
+				}
 
-                   String^ Clear_Message(" "); //уже "чистое" готовое сообщение
-                   for (int i = 0; i < count; i++)
-                   {
-                       Clear_Message+= message[i];
-                   }
+				String^ Clear_Message(" "); //уже "чистое" готовое сообщение
+				for (int i = 0; i < count; i++)
+				{
+					Clear_Message+= message[i];
+				}
 
-                   for (int i = 0; i < sizeof(buffer); i++)
-                   {
-                       buffer[i] = 0; //чистим буфер
-                   }
-				   richTextBox1->AppendText(Clear_Message); //добавляем сообщение в бокс
-            }
-        }
+				for (int i = 0; i < sizeof(buffer); i++)
+				{
+					buffer[i] = 0; //чистим буфер
+				}
+				richTextBox1->AppendText(Clear_Message); //добавляем сообщение в бокс
+			}
+		}
 	protected:
 		/// <summary>
 		/// Освободить все используемые ресурсы.
@@ -271,57 +267,56 @@ namespace Project {
 
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) //кнопка "войти"
 			 {
-				if (textBox1->Text != " " && textBox1->Text != "")
-				{
-					SOCKET ConnectSocket = INVALID_SOCKET; 
-					int iResult; 
+				 if (textBox1->Text =="")
+				 {
+					 richTextBox1->AppendText("Введите имя");
+				 }
+				 else
+				 {
+					 WSADATA wsaData;
+					 SOCKET ConnectSocket = INVALID_SOCKET;
+					 struct addrinfo *result = NULL, *ptr = NULL, hints;
+					 int iResult;
 
-					WSADATA wsaData; 
-					struct addrinfo *result = NULL, *ptr = NULL, hints;
- 
-					iResult = WSAStartup(MAKEWORD(2, 2), &wsaData); 
+					 iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-					ZeroMemory(&hints, sizeof(hints)); 
-					hints.ai_family = AF_UNSPEC; 
-					hints.ai_socktype = SOCK_STREAM; 
-					hints.ai_protocol = IPPROTO_TCP; 
+					 ZeroMemory(&hints, sizeof(hints));
+					 hints.ai_family = AF_UNSPEC;
+					 hints.ai_socktype = SOCK_STREAM;
+					 hints.ai_protocol = IPPROTO_TCP;
 
-					iResult = getaddrinfo("127.0.0.1","7770", &hints, &result); 
+					 iResult = getaddrinfo("127.0.0.1", "7770", &hints, &result);
 
-					for (ptr = result; ptr != NULL; ptr = ptr->ai_next) 
-					{ 
-						ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); 
+					 for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
+						 ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 
-						iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen); //подключение к серверу
-						if (iResult == SOCKET_ERROR) 
-						{ 
-							closesocket(ConnectSocket); 
-							ConnectSocket = INVALID_SOCKET; 
-							continue; 
-						} 
-						break; 
-					} 
-					freeaddrinfo(result);
+						 iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+						 if (iResult == SOCKET_ERROR) {
+							 closesocket(ConnectSocket);
+							 ConnectSocket = INVALID_SOCKET;
+							 continue;
+						 }
+						 break;
+					 }
 
-					richTextBox1->Enabled = false;
-					richTextBox1->AppendText("Hello");
-					//new th([&]() { this.RecvMessage(); })
-					//CreateThread(NULL,NULL,&RecvMessage,NULL,NULL,NULL);
-					//pthread_t t;
-					//pthread_create(&t, NULL, RecvMessage, NULL);
-					//pthread_join(t, NULL);
-				}
+					 freeaddrinfo(result);
+					 richTextBox1->AppendText("Hello");
+				 }
+				 //CreateThread(NULL,NULL,RecvMessage,NULL,NULL,NULL); 
+
 			 }
+	
 private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) //кнопка "отправить"
 		 {
-			String^ qwe="\n" + textBox1->Text + ": " + richTextBox2->Text + "##";
-			std::string str = msclr::interop::marshal_as<std::string>(qwe);
-			SendMessage(str);
-            richTextBox2->Clear();
+			 String^ qwe="\n" + textBox1->Text + ": " + richTextBox2->Text + "##";
+			 std::string str = msclr::interop::marshal_as<std::string>(qwe);
+			 SendMessage(str);
+			 richTextBox2->Clear();
 		 }
 private: System::Void войтиToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) 
 		 {
 			 MyForm1 ^f2=gcnew MyForm1();
+			 this->textBox1->Text=f2->textBox1->Text;
 			 f2->ShowDialog();
 		 }
 private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
